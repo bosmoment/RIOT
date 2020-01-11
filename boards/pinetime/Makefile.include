@@ -2,5 +2,12 @@
 RIOT_TERMINAL ?= jlink
 include $(RIOTMAKE)/tools/serial.inc.mk
 
+ifeq (pyocd,$(PROGRAMMER))
+  # The board is not recognized automatically by pyocd, so the CPU target
+  # option is passed explicitly
+  export FLASH_TARGET_TYPE ?= -t $(CPU)
+  include $(RIOTMAKE)/tools/pyocd.inc.mk
+endif
+
 # use shared Makefile.include
 include $(RIOTBOARD)/common/nrf52/Makefile.include
